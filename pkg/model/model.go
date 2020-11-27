@@ -4,6 +4,8 @@ import (
 	"goblog/pkg/logger"
 
 	"gorm.io/driver/mysql"
+	gormlogger "gorm.io/gorm/logger"
+
 	// GORM 的 MYSQL 数据库驱动导入
 	"gorm.io/gorm"
 )
@@ -18,7 +20,9 @@ func ConnectDB() *gorm.DB {
 		DSN: "homestead:secret@tcp(127.0.0.1:33060)/goblog?charset=utf8&parseTime=True&loc=Local",
 	})
 	// 准备数据库连接池
-	DB, err = gorm.Open(config, &gorm.Config{})
+	DB, err = gorm.Open(config, &gorm.Config{
+		Logger: gormlogger.Default.LogMode(gormlogger.Warn),
+	})
 	logger.LogError(err)
 	return DB
 }
